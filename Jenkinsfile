@@ -38,8 +38,8 @@ pipeline
 			steps
 			{
 				 withSonarQubeEnv('Test_Sonar') {
-                 sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:'project-key' /n:'$JOB_NAME' /v:'1.0'"
-                 }
+                                 sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:'project-key' /n:'$JOB_NAME' /v:'1.0'"
+                                 }
 			}
 		}
 		stage ('build')
@@ -70,15 +70,15 @@ pipeline
 		{
 			steps
 		    {
-		        sh returnStdout: true, script: '/bin/docker build --no-cache -t dtr.nagarro.com:443/dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER} .'
+		        sh returnStdout: true, script: '/bin/docker build --no-cache -t dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER} .'
 		    }
 		}
 		stage ('Push to DTR')
 		{
 		   steps
 		   {
-			   sh returnStdout: true, script: '/bin/docker push dtr.nagarro.com:443/dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}'
-	       }
+			   sh returnStdout: true, script: '/bin/docker push dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}'
+	        }
 		}
 		stage ('Stop Running container')
 		{
@@ -98,7 +98,7 @@ pipeline
 		{
 			steps
 			{
-			    sh 'docker run --name dotnetcoreapp_charugarg -d -p 5003:80 dtr.nagarro.com:443/dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}'
+			    sh 'docker run --name dotnetcoreapp_meghnasadhwani -d -p 5003:80 dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}'
 			}
 		}
 	}
