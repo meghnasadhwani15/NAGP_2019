@@ -53,14 +53,14 @@ pipeline
 		{
 	           steps
 	         {
-	           sh '''
-                   ContainerID=$(docker ps | grep 5000 | cut -d " " -f 1)
-                   if [  $ContainerID ]
+	           bat """
+                   set ContainerID=/$(docker ps | grep 5000 | cut -d " " -f 1)
+                   if [  %ContainerID% ]
                    then
-                      docker stop $ContainerID
-                      docker rm -f $ContainerID
-                   fi
-                '''
+                      docker stop %ContainerID%
+                      docker rm -f %ContainerID%
+                   
+                """
 	       }
 		}
 		stage ('Docker deployment')
