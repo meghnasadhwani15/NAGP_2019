@@ -58,8 +58,8 @@ pipeline
                 echo %ContainerID%
 		if [ %ContainerID% ]
 		then 
-		  docker stop $ContainerID
-                  docker rm -f $ContainerID
+		  docker stop %ContainerID%
+                  docker rm -f %ContainerID%
 		"""
 	       }
 		}
