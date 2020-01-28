@@ -38,7 +38,7 @@ pipeline
 		    steps
 		      {
 		       withSonarQubeEnv('Test_Sonar') {
-                       sh  """dotnet "${scannerHome}/SonarScanner.MSBuild.dll" begin /k:projectkey /n:$JOB_NAME /v:1.0 """
+                       sh  'dotnet "${scannerHome}/SonarScanner.MSBuild.dll" begin /k:projectkey /n:$JOB_NAME /v:1.0 '
 		    
                       }
 		}
@@ -57,7 +57,7 @@ pipeline
 			{
 				withSonarQubeEnv('Test_Sonar')
 			   {
-				sh """dotnet "${scannerHome}/SonarScanner.MSBuild.dll" end"""
+				sh ' dotnet "${scannerHome}/SonarScanner.MSBuild.dll" end '
 			   }
 			}
 		}
@@ -72,28 +72,28 @@ pipeline
 		{
 			steps
 		    {
-		        sh returnStdout: true, script: """ docker build --no-cache -t "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}" ."""
+		        sh returnStdout: true, script: 'docker build --no-cache -t "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}" .'
 		    }
 		}
 		stage ('Stop Running container')
 		{
 	       steps
 	       {
-	         sh """
+	         sh '''
                    ContainerID=$(docker ps | grep 5003 | cut -d " " -f 1)
                    if [  $ContainerID ]
                    then
                       docker stop $ContainerID
                       docker rm -f $ContainerID
                    fi
-                """
+                '''
 	       }
 		}
 		stage ('Docker deployment')
 		{
 			steps
 			{
-			    sh """ docker run --name dotnetcoreapp_meghnasadhwani -d -p 5003:80 "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}" """			}
+			    sh ' docker run --name dotnetcoreapp_meghnasadhwani -d -p 5003:80 "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}" '			}
 		}
 	}
 
