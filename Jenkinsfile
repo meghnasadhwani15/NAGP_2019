@@ -72,14 +72,14 @@ pipeline
 		{
 			steps
 		    {
-		        bat returnStdout: true, script: 'docker build --no-cache -t dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER} .'
+		        bat returnStdout: true, script: '/bin/docker build --no-cache -t dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER} .'
 		    }
 		}
 		stage ('Push to DTR')
 		{
 		   steps
 		   {
-			   bat returnStdout: true, script: 'docker push dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}'
+			   bat returnStdout: true, script: '/bin/docker push dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}'
 	       }
 		}
 		stage ('Stop Running container')
