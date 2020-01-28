@@ -72,7 +72,7 @@ pipeline
 		{
 			steps
 		    {
-		        bat returnStdout: true, script: 'docker build --no-cache -t dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER} .'
+		        bat returnStdout: true, script: 'docker build --no-cache -t dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}'
 		    }
 		}
 		stage ('Push to DTR')
