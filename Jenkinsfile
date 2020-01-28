@@ -30,7 +30,7 @@ pipeline
 		{
 			steps
 			{
-				bat "dotnet restore"	 
+				sh "dotnet restore"	 
 			}
 		}
 		stage ('Start sonarqube analysis')
@@ -46,7 +46,7 @@ pipeline
 		{
 			steps
 			{
-				bat "dotnet build -c Release -o WebApplication4/app/build"
+				sh "dotnet build -c Release -o WebApplication4/app/build"
 			}	
 		}
 		stage ('SonarQube Analysis end')
@@ -55,7 +55,7 @@ pipeline
 			{
 				withSonarQubeEnv('Test_Sonar')
 			   {
-				bat "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
+				sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
 			   }
 			}
 		}
@@ -63,28 +63,28 @@ pipeline
 		{
 			  steps
 	         {
-	           bat "dotnet publish -c Release -o WebApplication4/app/publish"
+	           sh "dotnet publish -c Release -o WebApplication4/app/publish"
 	         }
 		}
 		stage ('Docker Image')
 		{
 			steps
 		    {
-		        bat returnStdout: true, script: '/bin/docker build --no-cache -t dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER} .'
+		        sh returnStdout: true, script: '/bin/docker build --no-cache -t dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER} .'
 		    }
 		}
 		stage ('Push to DTR')
 		{
 		   steps
 		   {
-			   bat returnStdout: true, script: '/bin/docker push dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}'
+			   sh returnStdout: true, script: '/bin/docker push dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}'
 	        }
 		}
 		stage ('Stop Running container')
 		{
 	       steps
 	       {
-	           bat '''
+	           sh '''
                    ContainerID=$(docker ps | grep 5003 | cut -d " " -f 1)
                    if [  $ContainerID ]
                    then
@@ -98,7 +98,7 @@ pipeline
 		{
 			steps
 			{
-			    bat 'docker run --name dotnetcoreapp_meghnasadhwani -d -p 5003:80 dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}'
+			    sh 'docker run --name dotnetcoreapp_meghnasadhwani -d -p 5003:80 dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}'
 			}
 		}
 	}
