@@ -38,8 +38,8 @@ pipeline
 			steps
 			{
 				 withSonarQubeEnv('Test_Sonar') {
-                                 sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:'project-key' /n:'$JOB_NAME' /v:'1.0'"
-                                 }
+                 sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:'project-key' /n:'$JOB_NAME' /v:'1.0'"
+                 }
 			}
 		}
 		stage ('build')
@@ -78,7 +78,7 @@ pipeline
 		   steps
 		   {
 			   sh returnStdout: true, script: '/bin/docker push dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}'
-	        }
+	       }
 		}
 		stage ('Stop Running container')
 		{
