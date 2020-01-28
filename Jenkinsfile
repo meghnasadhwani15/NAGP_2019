@@ -30,7 +30,7 @@ pipeline
 		{
 			steps
 			{
-				bat "dotnet restore"	 
+				sh "dotnet restore"	 
 			}
 		}
 		stage ('Start sonarqube analysis')
@@ -38,7 +38,7 @@ pipeline
 		    steps
 		      {
 		       withSonarQubeEnv('Test_Sonar') {
-                       bat  """dotnet "${scannerHome}/SonarScanner.MSBuild.dll" begin /k:projectkey /n:$JOB_NAME /v:1.0 """
+                       sh  """dotnet "${scannerHome}/SonarScanner.MSBuild.dll" begin /k:projectkey /n:$JOB_NAME /v:1.0 """
 		    
                       }
 		}
@@ -48,7 +48,7 @@ pipeline
 		{
 			steps
 			{
-				bat "dotnet build -c Release -o WebApplication4/app/build"
+				sh "dotnet build -c Release -o WebApplication4/app/build"
 			}	
 		}
 		stage ('SonarQube Analysis end')
@@ -57,7 +57,7 @@ pipeline
 			{
 				withSonarQubeEnv('Test_Sonar')
 			   {
-				bat """dotnet "${scannerHome}/SonarScanner.MSBuild.dll" end"""
+				sh """dotnet "${scannerHome}/SonarScanner.MSBuild.dll" end"""
 			   }
 			}
 		}
@@ -65,14 +65,14 @@ pipeline
 		{
 			  steps
 	         {
-	           bat "dotnet publish -c Release -o WebApplication4/app/publish"
+	           sh "dotnet publish -c Release -o WebApplication4/app/publish"
 	         }
 		}
 		stage ('Docker Image')
 		{
 			steps
 		    {
-		        bat returnStdout: true, script: """ docker build --no-cache -t "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}" ."""
+		        sh returnStdout: true, script: """ docker build --no-cache -t "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}" ."""
 		    }
 		}
 		stage ('Stop Running container')
@@ -80,7 +80,12 @@ pipeline
 	       steps
 	       {
 	         bat """
-                   ContainerID= "sd"
+                   ContainerID=$(docker ps | grep 5003 | cut -d " " -f 1)
+                   if [  $ContainerID ]
+                   then
+                      docker stop $ContainerID
+                      docker rm -f $ContainerID
+                   fi
                 """
 	       }
 		}
@@ -88,7 +93,7 @@ pipeline
 		{
 			steps
 			{
-			    bat """ docker run --name dotnetcoreapp_meghnasadhwani -d -p 5003:80 "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}" """			}
+			    sh """ docker run --name dotnetcoreapp_meghnasadhwani -d -p 5003:80 "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}" """			}
 		}
 	}
 
