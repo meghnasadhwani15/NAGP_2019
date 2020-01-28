@@ -72,7 +72,7 @@ pipeline
 		{
 			steps
 		    {
-		        bat returnStdout: true, script: 'docker build --no-cache -t dotnetcoreapp_meghnasadhwani .'
+		        bat returnStdout: true, script: 'docker build --no-cache -t "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}" .'
 		    }
 		}
 		stage ('Stop Running container')
@@ -86,7 +86,7 @@ pipeline
 		{
 			steps
 			{
-			    bat 'docker run --name dotnetcoreapp_meghnasadhwani -d -p 5003:80 dotnetcoreapp_meghnasadhwani'
+			    bat 'docker run --name dotnetcoreapp_meghnasadhwani -d -p 5003:80 "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}"'
 			}
 		}
 	}
