@@ -75,13 +75,6 @@ pipeline
 		        bat returnStdout: true, script: 'docker build --no-cache -t dotnetcoreapp_meghnasadhwani .'
 		    }
 		}
-		stage ('Push to DTR')
-		{
-		   steps
-		   {
-			   bat returnStdout: true, script: 'docker push dotnetcoreapp_meghnasadhwani'
-	       }
-		}
 		stage ('Stop Running container')
 		{
 	       steps
