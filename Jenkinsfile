@@ -38,7 +38,7 @@ pipeline
 		    steps
 		      {
 		       withSonarQubeEnv('Test_Sonar') {
-                       sh  "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:'project-key' /n:'$JOB_NAME' /v:'1.0' "
+                       bat  "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:'project-key' /n:'$JOB_NAME' /v:'1.0' "
 		    
                       }
 		}
@@ -48,7 +48,7 @@ pipeline
 		{
 			steps
 			{
-				sh "dotnet build -c Release -o WebApplication4/app/build"
+				bat "dotnet build -c Release -o WebApplication4/app/build"
 			}	
 		}
 		stage ('SonarQube Analysis end')
@@ -57,7 +57,7 @@ pipeline
 			{
 				withSonarQubeEnv('Test_Sonar')
 			   {
-				sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
+				bat "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
 			   }
 			}
 		}
