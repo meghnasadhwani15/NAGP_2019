@@ -55,7 +55,11 @@ pipeline
 	       {
 	        bat """ 
 		set ContainerID = docker ps | grep 5003 | cut -d " " -f 1     
-                echo %ContainerID% 
+                echo %ContainerID%
+		if [ %ContainerID% ]
+		then 
+		  docker stop $ContainerID
+                  docker rm -f $ContainerID
 		"""
 	       }
 		}
