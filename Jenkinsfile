@@ -3,7 +3,7 @@ pipeline
 	agent any
 	environment
 	{
-		scannerHome = tool name: "sonar_scanner_dotnet", type: "hudson.plugins.sonar.MsBuildSQRunnerInstallation"   
+		scannerHome = tool name: 'sonar_scanner_dotnet', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'  
 	}
 	options
    {
@@ -35,13 +35,14 @@ pipeline
 		}
 		stage ('Start sonarqube analysis')
 		{
-			steps
-			{
-				 withSonarQubeEnv('Test_Sonar') {
-                  sh 'dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:"project-key" /n:"$JOB_NAME" /v:"1.0"'
-                 }
-			}
+		    steps
+		      {
+		       withSonarQubeEnv('Test_Sonar') {
+                       sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:'project-key' /n:'$JOB_NAME' /v:'1.0'"
+                       }
 		}
+		}
+
 		stage ('build')
 		{
 			steps
