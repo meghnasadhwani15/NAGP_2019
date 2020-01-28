@@ -79,7 +79,7 @@ pipeline
 		{
 	       steps
 	       {
-	        bat """ ContainerID = \$(docker ps | grep 5003 | cut -d " " -f 1)"""
+	        bat """ set ContainerID = \$(docker ps | grep 5003 | cut -d " " -f 1)"""
 	       }
 		}
 		stage ('Docker deployment')
