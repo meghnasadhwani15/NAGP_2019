@@ -38,7 +38,7 @@ pipeline
 		    steps
 		      {
 		       withSonarQubeEnv('Test_Sonar') {
-                       bat  """dotnet "${scannerHome}/SonarScanner.MSBuild.dll" begin /k:'project-key' /n:'$JOB_NAME' /v:'1.0' """
+                       bat  """dotnet "${scannerHome}/SonarScanner.MSBuild.dll" begin /k:'projectkey' /n:'$JOB_NAME' /v:'1.0' """
 		    
                       }
 		}
@@ -57,7 +57,7 @@ pipeline
 			{
 				withSonarQubeEnv('Test_Sonar')
 			   {
-				bat "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
+				bat """dotnet "${scannerHome}/SonarScanner.MSBuild.dll" end"""
 			   }
 			}
 		}
