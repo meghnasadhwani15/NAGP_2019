@@ -33,17 +33,7 @@ pipeline
 				bat "dotnet restore"	 
 			}
 		}
-		stage ('Start sonarqube analysis')
-		{
-		    steps
-		      {
-		       withSonarQubeEnv('Test_Sonar') {
-                       bat  """ dotnet "${scannerHome}/SonarScanner.MSBuild.dll" begin /k:projectkey /n:$JOB_NAME /v:1.0 """
-		    
-                      }
-		}
-		}
-
+		
 		stage ('build')
 		{
 			steps
@@ -51,23 +41,7 @@ pipeline
 				bat "dotnet build -c Release -o WebApplication4/app/build"
 			}	
 		}
-		stage ('SonarQube Analysis end')
-		{	
-			steps
-			{
-				withSonarQubeEnv('Test_Sonar')
-			   {
-				bat  """ dotnet "${scannerHome}/SonarScanner.MSBuild.dll" end """
-			   }
-			}
-		}
-		stage ('Release Artifacts')
-		{
-			  steps
-	         {
-	           bat "dotnet publish -c Release -o WebApplication4/app/publish"
-	         }
-		}
+		
 		stage ('Docker Image')
 		{
 			steps
