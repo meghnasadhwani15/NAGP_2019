@@ -54,7 +54,7 @@ pipeline
 	           steps
 	         {
 	           bat """
-                   set ContainerID=/$(docker ps | grep 5000 | cut -d " " -f 1)
+                   set ContainerID=\$(docker ps | grep 5000 | cut -d " " -f 1)
                    if [  %ContainerID% ]
                    then
                       docker stop %ContainerID%
