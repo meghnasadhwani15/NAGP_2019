@@ -90,7 +90,7 @@ pipeline
 		{
 			steps
 			{
-			    bat """ docker run --name meghnasadhwani -d -p 5000:80 "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}"  """			
+			    bat """ docker run --name meghnasadhwani -d -p 5002:80 "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}"  """			
 			}
 		}
     }
