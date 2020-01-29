@@ -80,9 +80,9 @@ pipeline
 		
 		stage ('Stop Running container')
 		{
-	        steps
+	         steps
 	        {
-	            bat returnStdout: true, script: " docker ps -q --filter \"name=meghnasadhwani\"| grep -q . && docker stop meghnasadhwani && docker rm -f meghnasadhwani"    
+	            bat """ docker ps -aq --filter "name=meghnasadhwani" | grep -q . && docker stop meghnasadhwani && docker rm -f meghnasadhwani """
 	        }
 		}
 		stage ('Docker deployment')
