@@ -82,7 +82,7 @@ pipeline
 		{
 	        steps
 	        {
-	            bat """ docker ps -q --filter "name=meghnasadhwani" && docker stop meghnasadhwani && docker rm -f meghnasadhwani  """    
+	            bat """ docker ps -q --filter "name=meghnasadhwani" | grep -q . && docker stop meghnasadhwani && docker rm -fv meghnasadhwani  """    
 	        }
 		}
 		stage ('Docker deployment')
