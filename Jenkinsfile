@@ -33,12 +33,13 @@ pipeline
 				bat "dotnet restore"	 
 			}
 		}
+		
 		stage ('Start sonarqube analysis')
 		{
 			steps
 			{
 			  withSonarQubeEnv('Test_Sonar') {
-               bat """ dotnet "${scannerHome}/SonarScanner.MSBuild.dll" begin /k:projectkey /n:$JOB_NAME /v:1.0 """
+              bat """ dotnet "${scannerHome}/SonarScanner.MSBuild.dll" begin /k:projectkey /n:$JOB_NAME /v:1.0 """
               }
 			}
 		}
@@ -56,10 +57,11 @@ pipeline
 			steps
 			{
 				withSonarQubeEnv('Test_Sonar'){
-				 bat """dotnet "${scannerHome}/SonarScanner.MSBuild.dll" end"""
+				bat """dotnet "${scannerHome}/SonarScanner.MSBuild.dll" end"""
 			   }
 			}
 		}
+		
 		stage ('Release Artifacts')
 		{
 			steps
@@ -75,23 +77,20 @@ pipeline
 		        bat returnStdout: true, script: """ docker build --no-cache -t "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}" ."""
 		    }
 		}
+		
 		stage ('Stop Running container')
 		{
-	            steps
-	       {
-	          
-		  bat """ 
-		  set ContainerID = \$('docker ps | grep 5000 | cut -d " " -f 1')
-		  if %ContainerID% != ""  docker stop %ContainerID% | docker rm -f %ContainerID%
-		  """     
-	       }
+	        steps
+	        {
+	            bat """ docker ps -q --filter "name=meghnasadhwani" && docker stop meghnasadhwani && docker rm -f meghnasadhwani  """    
+	        }
 		}
 		stage ('Docker deployment')
 		{
 			steps
 			{
-			    bat """ docker run --name dotnetcoreapp_meghnasadhwani -d -p 5000:80 "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}" """			}
-		}
+			    bat """ docker run --name meghnasadhwani -d -p 5000:80 "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}" """			}
+		    }
 	}
 
 	 post {
