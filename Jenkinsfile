@@ -81,7 +81,7 @@ pipeline
 	       {
 	          
 		  bat """ 
-		  set ContainerID = docker ps | grep 5000 | cut -d " " -f 1
+		  set ContainerID = \$('docker ps | grep 5000 | cut -d " " -f 1')
 		  if %ContainerID% != ""  docker stop %ContainerID% | docker rm -f %ContainerID%
 		  """     
 	       }
