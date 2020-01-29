@@ -30,7 +30,16 @@ pipeline
 		{
 			steps
 			{
-				bat "dotnet restore"	 
+				sh "dotnet restore"	 
+			}
+		}
+		stage ('Start sonarqube analysis')
+		{
+			steps
+			{
+			  withSonarQubeEnv('Test_Sonar') {
+                sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:'project-key' /n:'$JOB_NAME' /v:'1.0'"
+              }
 			}
 		}
 		
@@ -38,8 +47,25 @@ pipeline
 		{
 			steps
 			{
-				bat "dotnet build -c Release -o WebApplication4/app/build"
+				sh "dotnet build -c Release -o WebApplication4/app/build"
 			}	
+		}
+		
+		stage ('SonarQube Analysis end')
+		{	
+			steps
+			{
+				withSonarQubeEnv('Test_Sonar'){
+				 sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
+			   }
+			}
+		}
+		stage ('Release Artifacts')
+		{
+			steps
+	        {
+	           sh "dotnet publish -c Release -o WebApplication4/app/publish"
+	        }
 		}
 		
 		stage ('Docker Image')
@@ -51,13 +77,16 @@ pipeline
 		}
 		stage ('Stop Running container')
 		{
-	           steps
-	         {
-	           bat """
-                   set ContainerID= (' docker ps | grep 5000 | cut -d " " -f 1 ')
-                   echo %ContainerID%
-                   
-                """
+	            steps
+	       {
+	           sh '''
+                   ContainerID=$(docker ps | grep 5000 | cut -d " " -f 1)
+                   if [  $ContainerID ]
+                   then
+                      docker stop $ContainerID
+                      docker rm -f $ContainerID
+                   fi
+                '''
 	       }
 		}
 		stage ('Docker deployment')
