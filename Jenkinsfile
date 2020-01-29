@@ -82,14 +82,14 @@ pipeline
 		{
 	         steps
 	        {
-	            bat """docker ps -q --filter \"name=meghnasadhwani\" | grep -q . && (docker stop meghnasadhwani && docker rm -fv meghnasadhwani) || true """
+	            bat """docker ps -q --filter "name=meghnasadhwani" | grep -q . && (docker stop meghnasadhwani && docker rm -fv meghnasadhwani) || true """
 	        }
 		}
 		stage ('Docker deployment')
 		{
 			steps
 			{
-			    bat """  """			}
+			    bat """ docker run --name meghnasadhwani -d -p 5000:80 "dotnetcoreapp_meghnasadhwani:${BUILD_NUMBER}"  """			}
 		    }
 	}
 
